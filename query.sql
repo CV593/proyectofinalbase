@@ -1,34 +1,32 @@
 CREATE DATABASE Prueba;
-GO
 
 USE Prueba;
-GO
 
 -- Tabla: Beneficiario
 CREATE TABLE Beneficiario (
-    ID_Beneficiario INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Apellidos NVARCHAR(100),
+    ID_Beneficiario INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Apellidos VARCHAR(100),
     FechaNacimiento DATE,
-    Direccion NVARCHAR(200),
-    Telefono NVARCHAR(20),
-    CorreoElectronico NVARCHAR(100),
-    Genero NVARCHAR(20),
-    EstadoCivil NVARCHAR(20),
-    NumeroIdentificacion NVARCHAR(50) UNIQUE,
+    Direccion VARCHAR(200),
+    Telefono VARCHAR(20),
+    CorreoElectronico VARCHAR(100),
+    Genero VARCHAR(20),
+    EstadoCivil VARCHAR(20),
+    NumeroIdentificacion VARCHAR(50) UNIQUE,
     FechaRegistro DATE,
-    NotasAdicionales NVARCHAR(MAX)
+    NotasAdicionales TEXT
 );
 
 -- Tabla: Programa de Asistencia
 CREATE TABLE ProgramaAsistencia (
-    ID_Programa INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
-    Objetivos NVARCHAR(MAX),
+    ID_Programa INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
+    Objetivos TEXT,
     FechaInicio DATE,
     FechaFin DATE,
-    Responsable NVARCHAR(100)
+    Responsable VARCHAR(100)
 );
 
 -- Relación: BeneficiarioProgramaAsistencia (Tabla intermedia)
@@ -42,34 +40,35 @@ CREATE TABLE BeneficiarioProgramaAsistencia (
 
 -- Tabla: Proyecto
 CREATE TABLE Proyecto (
-    ID_Proyecto INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
-    Objetivos NVARCHAR(MAX),
+    ID_Proyecto INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
+    Objetivos TEXT,
     FechaInicio DATE,
     FechaFin DATE,
     Presupuesto DECIMAL(18, 2),
-    Responsable NVARCHAR(100),
-    Estado NVARCHAR(20)
+    Responsable VARCHAR(100),
+    Estado VARCHAR(20)
 );
 
 -- Relación: ProyectoInformeImpacto (Tabla intermedia para Informes de Impacto)
 CREATE TABLE ProyectoInformeImpacto (
-    ID_Informe INT PRIMARY KEY IDENTITY,
+    ID_Informe INT PRIMARY KEY AUTO_INCREMENT,
     ID_Proyecto INT,
     FechaCreacion DATE,
-    Resultados NVARCHAR(MAX),
-    Recomendaciones NVARCHAR(MAX),
+    Resultados TEXT,
+    Recomendaciones TEXT,
     FOREIGN KEY (ID_Proyecto) REFERENCES Proyecto(ID_Proyecto)
 );
+
 -- Tabla: Recurso
 CREATE TABLE Recurso (
-    ID_Recurso INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Tipo NVARCHAR(50),
+    ID_Recurso INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Tipo VARCHAR(50),
     Cantidad INT,
     FechaAdquisicion DATE,
-    Estado NVARCHAR(50)
+    Estado VARCHAR(50)
 );
 
 -- Relación: ProyectoRecurso (Tabla intermedia para Recursos Asignados)
@@ -81,17 +80,16 @@ CREATE TABLE ProyectoRecurso (
     FOREIGN KEY (ID_Recurso) REFERENCES Recurso(ID_Recurso)
 );
 
-
 -- Tabla: Actividad
 CREATE TABLE Actividad (
-    ID_Actividad INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
+    ID_Actividad INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
     FechaHora DATETIME,
-    Lugar NVARCHAR(200),
+    Lugar VARCHAR(200),
     ProyectoAsociado INT,
     ProgramaAsociado INT,
-    Estado NVARCHAR(20),
+    Estado VARCHAR(20),
     FOREIGN KEY (ProyectoAsociado) REFERENCES Proyecto(ID_Proyecto),
     FOREIGN KEY (ProgramaAsociado) REFERENCES ProgramaAsistencia(ID_Programa)
 );
@@ -104,18 +102,20 @@ CREATE TABLE ActividadBeneficiario (
     FOREIGN KEY (ID_Actividad) REFERENCES Actividad(ID_Actividad),
     FOREIGN KEY (ID_Beneficiario) REFERENCES Beneficiario(ID_Beneficiario)
 );
+
 -- Tabla: Voluntario
 CREATE TABLE Voluntario (
-    ID_Voluntario INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Apellidos NVARCHAR(100),
+    ID_Voluntario INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Apellidos VARCHAR(100),
     FechaNacimiento DATE,
-    Direccion NVARCHAR(200),
-    Telefono NVARCHAR(20),
-    CorreoElectronico NVARCHAR(100),
-    Habilidades NVARCHAR(MAX),
-    Disponibilidad NVARCHAR(20)
+    Direccion VARCHAR(200),
+    Telefono VARCHAR(20),
+    CorreoElectronico VARCHAR(100),
+    Habilidades TEXT,
+    Disponibilidad VARCHAR(20)
 );
+
 -- Relación: ActividadVoluntario (Voluntarios en Actividades)
 CREATE TABLE ActividadVoluntario (
     ID_Actividad INT,
@@ -125,38 +125,37 @@ CREATE TABLE ActividadVoluntario (
     FOREIGN KEY (ID_Voluntario) REFERENCES Voluntario(ID_Voluntario)
 );
 
-
 -- Tabla: Donante
 CREATE TABLE Donante (
-    ID_Donante INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Apellidos NVARCHAR(100),
-    Direccion NVARCHAR(200),
-    Telefono NVARCHAR(20),
-    CorreoElectronico NVARCHAR(100),
-    Tipo NVARCHAR(50),
-    NotasAdicionales NVARCHAR(MAX)
+    ID_Donante INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Apellidos VARCHAR(100),
+    Direccion VARCHAR(200),
+    Telefono VARCHAR(20),
+    CorreoElectronico VARCHAR(100),
+    Tipo VARCHAR(50),
+    NotasAdicionales TEXT
 );
 
 -- Tabla: Donacion
 CREATE TABLE Donacion (
-    ID_Donacion INT PRIMARY KEY IDENTITY,
+    ID_Donacion INT PRIMARY KEY AUTO_INCREMENT,
     ID_Donante INT,
     Monto DECIMAL(18, 2),
     Fecha DATE,
-    Metodo NVARCHAR(50),
+    Metodo VARCHAR(50),
     FOREIGN KEY (ID_Donante) REFERENCES Donante(ID_Donante)
 );
 
 -- Tabla: Campaña de Recaudación
 CREATE TABLE CampañaRecaudacion (
-    ID_Campaña INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
+    ID_Campaña INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
     ObjetivoRecaudacion DECIMAL(18, 2),
     FechaInicio DATE,
     FechaFin DATE,
-    Responsable NVARCHAR(100)
+    Responsable VARCHAR(100)
 );
 
 -- Relación: CampañaDonacion
@@ -170,39 +169,39 @@ CREATE TABLE CampañaDonacion (
 
 -- Tabla: Personal
 CREATE TABLE Personal (
-    ID_Personal INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Apellidos NVARCHAR(100),
+    ID_Personal INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Apellidos VARCHAR(100),
     FechaNacimiento DATE,
-    Direccion NVARCHAR(200),
-    Telefono NVARCHAR(20),
-    CorreoElectronico NVARCHAR(100),
-    Cargo NVARCHAR(100),
-    Departamento NVARCHAR(100),
+    Direccion VARCHAR(200),
+    Telefono VARCHAR(20),
+    CorreoElectronico VARCHAR(100),
+    Cargo VARCHAR(100),
+    Departamento VARCHAR(100),
     FechaContratacion DATE,
     Salario DECIMAL(18, 2)
 );
 
 -- Tabla: PersonalEvaluacion
 CREATE TABLE PersonalEvaluacion (
-    ID_Evaluacion INT PRIMARY KEY IDENTITY,
+    ID_Evaluacion INT PRIMARY KEY AUTO_INCREMENT,
     ID_Personal INT,
     FechaEvaluacion DATE,
-    Evaluador NVARCHAR(100),
-    Resultados NVARCHAR(MAX),
-    Recomendaciones NVARCHAR(MAX),
+    Evaluador VARCHAR(100),
+    Resultados TEXT,
+    Recomendaciones TEXT,
     FOREIGN KEY (ID_Personal) REFERENCES Personal(ID_Personal)
 );
 
 -- Tabla: Evento
 CREATE TABLE Evento (
-    ID_Evento INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
+    ID_Evento INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
     FechaHora DATETIME,
-    Lugar NVARCHAR(255),
-    Responsable NVARCHAR(100),
-    Estado NVARCHAR(50)
+    Lugar VARCHAR(255),
+    Responsable VARCHAR(100),
+    Estado VARCHAR(50)
 );
 
 -- Relación: EventoParticipante
@@ -217,7 +216,7 @@ CREATE TABLE EventoParticipante (
 -- Relación: EventoMaterial
 CREATE TABLE EventoMaterial (
     ID_Evento INT,
-    Material NVARCHAR(100),
+    Material VARCHAR(100),
     Cantidad INT,
     PRIMARY KEY (ID_Evento, Material),
     FOREIGN KEY (ID_Evento) REFERENCES Evento(ID_Evento)
@@ -225,11 +224,11 @@ CREATE TABLE EventoMaterial (
 
 -- Tabla: Comunicación
 CREATE TABLE Comunicacion (
-    ID_Comunicacion INT PRIMARY KEY IDENTITY,
-    Tipo NVARCHAR(50),
+    ID_Comunicacion INT PRIMARY KEY AUTO_INCREMENT,
+    Tipo VARCHAR(50),
     FechaHora DATETIME,
-    Asunto NVARCHAR(100),
-    Detalles NVARCHAR(MAX)
+    Asunto VARCHAR(100),
+    Detalles TEXT
 );
 
 -- Relación: ComunicacionParticipante
@@ -243,13 +242,13 @@ CREATE TABLE ComunicacionParticipante (
 
 -- Tabla: Colaboración
 CREATE TABLE Colaboracion (
-    ID_Colaboracion INT PRIMARY KEY IDENTITY,
-    Organizacion NVARCHAR(100),
-    Tipo NVARCHAR(50),
+    ID_Colaboracion INT PRIMARY KEY AUTO_INCREMENT,
+    Organizacion VARCHAR(100),
+    Tipo VARCHAR(50),
     FechaInicio DATE,
     FechaFin DATE,
-    Objetivos NVARCHAR(MAX),
-    ContactoPrincipal NVARCHAR(100)
+    Objetivos TEXT,
+    ContactoPrincipal VARCHAR(100)
 );
 
 -- Relación: ColaboracionActividad
@@ -263,11 +262,11 @@ CREATE TABLE ColaboracionActividad (
 
 -- Tabla: Capacitación
 CREATE TABLE Capacitacion (
-    ID_Capacitacion INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
+    ID_Capacitacion INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
     FechaHora DATETIME,
-    Lugar NVARCHAR(255)
+    Lugar VARCHAR(255)
 );
 
 -- Relación: CapacitacionParticipante
@@ -282,7 +281,7 @@ CREATE TABLE CapacitacionParticipante (
 -- Relación: CapacitacionMaterial
 CREATE TABLE CapacitacionMaterial (
     ID_Capacitacion INT,
-    Material NVARCHAR(100),
+    Material VARCHAR(100),
     Cantidad INT,
     PRIMARY KEY (ID_Capacitacion, Material),
     FOREIGN KEY (ID_Capacitacion) REFERENCES Capacitacion(ID_Capacitacion)
@@ -290,18 +289,18 @@ CREATE TABLE CapacitacionMaterial (
 
 -- Tabla: Solicitud de Asistencia
 CREATE TABLE SolicitudAsistencia (
-    ID_Solicitud INT PRIMARY KEY IDENTITY,
+    ID_Solicitud INT PRIMARY KEY AUTO_INCREMENT,
     ID_Beneficiario INT,
     FechaSolicitud DATE,
-    Estado NVARCHAR(50),
-    Descripcion NVARCHAR(MAX),
+    Estado VARCHAR(50),
+    Descripcion TEXT,
     FOREIGN KEY (ID_Beneficiario) REFERENCES Beneficiario(ID_Beneficiario)
 );
 
 -- Tabla: Informe Financiero
 CREATE TABLE InformeFinanciero (
-    ID_Informe INT PRIMARY KEY IDENTITY,
-    Periodo NVARCHAR(50),
+    ID_Informe INT PRIMARY KEY AUTO_INCREMENT,
+    Periodo VARCHAR(50),
     FechaCreacion DATE,
     Ingresos DECIMAL(18, 2),
     Gastos DECIMAL(18, 2),
@@ -310,22 +309,22 @@ CREATE TABLE InformeFinanciero (
 
 -- Tabla: InformeFinancieroAuditoria
 CREATE TABLE InformeFinancieroAuditoria (
-    ID_Auditoria INT PRIMARY KEY IDENTITY,
+    ID_Auditoria INT PRIMARY KEY AUTO_INCREMENT,
     ID_Informe INT,
     FechaAuditoria DATE,
-    Resultados NVARCHAR(MAX),
-    Recomendaciones NVARCHAR(MAX),
+    Resultados TEXT,
+    Recomendaciones TEXT,
     FOREIGN KEY (ID_Informe) REFERENCES InformeFinanciero(ID_Informe)
 );
 
 -- Tabla: Actividad de Recaudación
 CREATE TABLE ActividadRecaudacion (
-    ID_Actividad INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
+    ID_Actividad INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
     FechaHora DATETIME,
-    Lugar NVARCHAR(255),
-    Responsable NVARCHAR(100)
+    Lugar VARCHAR(255),
+    Responsable VARCHAR(100)
 );
 
 -- Relación: ActividadRecaudacionDonacion
@@ -339,18 +338,18 @@ CREATE TABLE ActividadRecaudacionDonacion (
 
 -- Tabla: Política
 CREATE TABLE Politica (
-    ID_Politica INT PRIMARY KEY IDENTITY,
-    Nombre NVARCHAR(100),
-    Descripcion NVARCHAR(MAX),
+    ID_Politica INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100),
+    Descripcion TEXT,
     FechaImplementacion DATE,
-    Responsable NVARCHAR(100)
+    Responsable VARCHAR(100)
 );
 
 -- Tabla: Seguimiento
 CREATE TABLE Seguimiento (
-    ID_Seguimiento INT PRIMARY KEY IDENTITY,
+    ID_Seguimiento INT PRIMARY KEY AUTO_INCREMENT,
     ID_Beneficiario INT,
     FechaSeguimiento DATE,
-    Observaciones NVARCHAR(MAX),
+    Observaciones TEXT,
     FOREIGN KEY (ID_Beneficiario) REFERENCES Beneficiario(ID_Beneficiario)
 );
